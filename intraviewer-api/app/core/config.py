@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     APP_VERSION: str = "0.1.0"
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
+    DATABASE_URL: str = ""
 
     model_config = SettingsConfigDict(
         env_file=".env",
