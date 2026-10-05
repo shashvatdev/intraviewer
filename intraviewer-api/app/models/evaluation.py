@@ -1,5 +1,5 @@
 from uuid import uuid4
-from sqlalchemy import String, ForeignKey, Float
+from sqlalchemy import String, ForeignKey, Float, JSON
 from sqlalchemy.orm import Mapped, mapped_column
 from app.db.base import Base
 
@@ -11,5 +11,9 @@ class Evaluation(Base):
     score: Mapped[float] = mapped_column(Float, nullable=True)
     feedback: Mapped[str] = mapped_column(String(2000), nullable=True)
     overall_score: Mapped[float] = mapped_column(Float, nullable=True)
+    technical_score: Mapped[float] = mapped_column(Float, nullable=True)
+    communication_score: Mapped[float] = mapped_column(Float, nullable=True)
+    strengths: Mapped[list] = mapped_column(JSON, nullable=True)
+    weaknesses: Mapped[list] = mapped_column(JSON, nullable=True)
     final_report: Mapped[str] = mapped_column(String, nullable=True)
     recommendation: Mapped[str] = mapped_column(String(100), nullable=True)

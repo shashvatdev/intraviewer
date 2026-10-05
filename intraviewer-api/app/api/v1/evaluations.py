@@ -16,8 +16,16 @@ def create_evaluation(id: str, data: EvaluationCreate, db: Session = Depends(get
     db.refresh(obj)
     return obj
 
-@router.get("/sessions/{id}/evaluation", response_model=EvaluationResponse)
+@router.get("/sessions/{id}/evaluation")
 def get_evaluation(id: str, db: Session = Depends(get_db), org: Organization = Depends(get_current_organization)):
     obj = db.query(Evaluation).filter(Evaluation.session_id == id, Evaluation.organization_id == org.id).first()
     if not obj: raise HTTPException(status_code=404)
-    return obj
+    return {
+        "overall_score": obj.overall_score,
+        "recommendation": obj.recommendation,
+        "technical_score": obj.technical_score,
+        "communication_score": obj.communication_score,
+        "strengths": obj.strengths,
+        "weaknesses": obj.weaknesses,
+        "final_report": obj.final_report
+    }

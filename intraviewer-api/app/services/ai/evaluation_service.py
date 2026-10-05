@@ -95,9 +95,13 @@ def evaluate_interview(db: Session, session_id: str):
     
     Output JSON format exactly like this:
     {{
-        "overall_score": 8.0,
-        "final_report": "string",
-        "recommendation": "Strong Hire"
+        "overall_score": 82,
+        "recommendation": "Strong Hire",
+        "technical_score": 85,
+        "communication_score": 79,
+        "strengths": ["string"],
+        "weaknesses": ["string"],
+        "final_report": "string"
     }}
     """
     response = call_groq_json(prompt)
@@ -108,6 +112,10 @@ def evaluate_interview(db: Session, session_id: str):
         db.add(evaluation)
     
     evaluation.overall_score = response.get("overall_score")
+    evaluation.technical_score = response.get("technical_score")
+    evaluation.communication_score = response.get("communication_score")
+    evaluation.strengths = response.get("strengths", [])
+    evaluation.weaknesses = response.get("weaknesses", [])
     evaluation.final_report = response.get("final_report")
     evaluation.recommendation = response.get("recommendation")
     db.commit()
